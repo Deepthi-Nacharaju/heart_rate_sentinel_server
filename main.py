@@ -72,6 +72,30 @@ def send_email(receiver, patient_id):
     return
 
 
+def post_avg_patient(parameters, server=None):
+    """
+
+    Args:
+        parameters: array with patient id
+        server: url address (optional arg: default set to local)
+
+    Returns:
+        printed string of post request
+    """
+    if not server:
+        server = "http://127.0.0.1:5000/api/heart_rate"
+    else:
+        server = server + '/api/heart_rate'
+    first_datetime = '0'  # figure out how to make this the first datetime
+    post_dictionary = {
+        "patient_id": parameters[0],
+        "heart_rate_average_since": first_datetime,  # date string
+    }
+    r = requests.post(server, post_dictionary)
+    print(r.json())
+    return
+
+
 def main():
     #  os.system("FLASK_APP=flask_service.py flask run")
     post_new_patient((1, 'dn56@duke.edu', 40))
