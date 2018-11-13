@@ -5,21 +5,22 @@ app = Flask(__name__)
 
 
 @app.route("/api/new_patient", methods=["POST"])
-def new_patient():
+def post_new_patient():
     r = request.get_json()
     return jsonify(r)
 
 
 @app.route("/api/heart_rate", methods=["POST"])
-def heart_rate():
+def post_heart_rate():
     r = request.get_json()
     return jsonify(r)
 
 
 @app.route("/api/status/patient", methods=["GET"])
-def is_patient():
+def get_is_patient():
     # do things
-    return
+    r = request.get_json()
+    return print(jsonify(r))
 
 
 @app.route("/api/heart_rate/<patient_id>", methods=["GET"])
@@ -30,14 +31,14 @@ def get_patient():
 
 
 @app.route("/api/heart_rate/average/<patient_id>", methods=["GET"])
-def avg_patient():
+def get_avg_patient():
     # do things
 
     return
 
 
 @app.route("/api/heart_rate/interval_average", methods=["POST"])
-def heart_rate():
+def post_heart_rate_avg():
     r = request.get_json()
     return jsonify(r)
 
