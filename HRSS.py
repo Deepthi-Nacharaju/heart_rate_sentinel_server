@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request
 import math
 import requests
-app = Flask(__name__)
+import pymodm
 from pymodm import connect
 from pymodm import MongoModel, fields
+app = Flask(__name__)
+connect("mongodb://<dnacharaju>:<goduke10>@ds059365.mlab.com:59365/bme590")  # connect to database
 
 
 class Patient(MongoModel):
