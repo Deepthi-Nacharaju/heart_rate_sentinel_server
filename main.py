@@ -39,10 +39,10 @@ def post_new_patient(parameters, server=None):
                        }
     #try:
     r = requests.post(server, json=post_dictionary)
-    print(r.json())
+    #print(r.json())
     #except:
     #    logging.warning('New Patient Error: Check Inputs')
-    return
+    return print(r.json())
 
 
 def post_heart_rate(parameters, server=None):
@@ -67,8 +67,16 @@ def post_heart_rate(parameters, server=None):
     r = requests.post(server, json=post_dictionary)
     #except:
     #    logging.warning('Heart Rate Error: Check Inputs')
-    print(r.json())
-    return
+    return print(r.json())
+
+
+def get_heart_rates(parameters, server=None):
+    if not server:
+        server = "http://127.0.0.1:5000/api/heart_rate/{}".format(parameters[0])
+    else:
+        server = server + '/api/heart_rate{}'.format(parameters[0])
+    r = requests.get(server)
+    return print(r.json())
 
 
 def send_email(receiver, patient_id):
@@ -114,7 +122,6 @@ def post_avg_patient(parameters, server=None):
         "heart_rate_average_since": parameters[1],  # date string
     }
     r = requests.post(server, post_dictionary)
-    print(r.json())
     return
 
 
@@ -122,7 +129,8 @@ def main():
     server_url = "http://127.0.0.1:5000"  # must match app.run in HRSS.py
     #  os.system("FLASK_APP=flask_service.py flask run")
     post_new_patient((1, 'dn56@duke.edu', 40))
-    #post_heart_rate((1, 150))
+    post_heart_rate((1, 150))
+    get_heart_rates([1])
     # send_email('dn56@duke.edu', 1)
     return
 
