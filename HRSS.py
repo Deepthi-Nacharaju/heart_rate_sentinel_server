@@ -5,32 +5,33 @@ import pymodm
 from pymodm import connect
 from pymodm import MongoModel, fields
 app = Flask(__name__)
-connect("mongodb://<dnacharaju>:<goduke10>@ds059365.mlab.com:59365/bme590")  # connect to database
+connect("mongodb://dnacharaju:goduke10@ds059365.mlab.com:59365/bme590")  # connect to database
 
 
 class Patient(MongoModel):
     patient_id = fields.CharField(primary_key=True)
     attending_email = fields.CharField()
     user_age = fields.CharField()
-    heart_rate = []
-    heart_rate_time =[]
+    heart_rate = fields.ListField()
+    heart_rate_time = fields.ListField()
     heart_rate_average_since = fields.CharField()
 
 @app.route("/api/new_patient", methods=["POST"])
 def post_new_patient():
     r = request.get_json()
-    new_patient = Patient(r['patient_id'], attending_email=r['attending_email'], user_age=r['user_age'])
-    new_patient.save()
-    return print(new_patient)
+    Patient(patient_id=r['patient_id'], attending_email=r['attending_email'], user_age=r['user_age']).save()
+    return jsonify(r)
 
 
 @app.route("/api/heart_rate", methods=["POST"])
 def post_heart_rate():
     r = request.get_json()
-    for patient in Patient.objects.raw({"patient_id": r['patient_id']}):
-        patient.heart_rate.append(r['heart_rate'])
-        patient.heart_Rate_time.append(r['timestamp'])
-    return
+    patient = Patient.objects.raw({'id': r['patient_id']}).first()
+    patient.heart_rate.append(r['heart_rate'])
+    patient.heart_rate_time.append(r['timestamp'])
+    patient.save()
+    r['heart_rate'] = patient.heart_rate
+    return jsonify(r)
 
 
 @app.route("/api/status/,<patient_id>", methods=["GET"])
@@ -67,9 +68,8 @@ def get_is_patient(patient_id):
 
 @app.route("/api/heart_rate/<patient_id>", methods=["GET"])
 def get_patient(patient_id):
-    for patient in Patient.objects.raw({"patient_id": format(patient_id)}):
-        rate = patient.heart_rate
-    return rate
+    patient = Patient.objects.raw({'_id': format(patient_id)})
+    return print(patient.heart_rate)
 
 
 @app.route("/api/heart_rate/average/<patient_id>", methods=["GET"])
