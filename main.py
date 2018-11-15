@@ -8,15 +8,13 @@ from sendgrid.helpers.mail import *
 from pymodm import connect
 from pymodm import MongoModel, fields
 
-connect("mongodb://<dnacharaju>:<goduke10>@ds059365.mlab.com:59365/bme590")  # connect to database
-
 
 class Patient(MongoModel):
-    patient_id = fields.CharField(primary_key=True)
+    patient_id = fields.IntegerField(primary_key=True)
     attending_email = fields.CharField()
-    user_age = fields.CharField()
-    heart_rate = fields.CharField()
-    heart_rate_average_since = fields.CharField()
+    user_age = fields.FloatField()
+    heart_rate = fields.IntegerField()
+    heart_rate_average_since = fields.IntegerField()
 
 
 def post_new_patient(parameters, server=None):
@@ -76,7 +74,7 @@ def get_heart_rates(parameters, server=None):
     else:
         server = server + '/api/heart_rate{}'.format(parameters[0])
     r = requests.get(server)
-    return print(r.json())
+    return
 
 
 def send_email(receiver, patient_id):
@@ -130,6 +128,7 @@ def main():
     #  os.system("FLASK_APP=flask_service.py flask run")
     post_new_patient((1, 'dn56@duke.edu', 40))
     post_heart_rate((1, 150))
+    post_heart_rate((1, 100))
     get_heart_rates([1])
     # send_email('dn56@duke.edu', 1)
     return
