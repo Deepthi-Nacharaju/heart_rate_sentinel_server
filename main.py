@@ -3,8 +3,21 @@ import logging
 import datetime
 import sendgrid
 import os
+import pymodm
 from sendgrid.helpers.mail import *
-server_url = "http://127.0.0.1:5000"  # must match app.run in HRSS.py
+from pymodm import connect
+from pymodm import MongoModel, fields
+
+connect("mongodb://<dnacharaju>:<goduke10>@ds059365.mlab.com:59365/bme590")  # connect to database
+
+
+class Patient(MongoModel):
+    patient_id = fields.CharField(primary_key=True)
+    attending_email = fields.CharField()
+    user_age = fields.CharField()
+    heart_rate = fields.CharField()
+    heart_rate_average_since = fields.CharField()
+
 
 def post_new_patient(parameters, server=None):
     """
@@ -26,10 +39,10 @@ def post_new_patient(parameters, server=None):
                        }
     #try:
     r = requests.post(server, json=post_dictionary)
-    print(r.json())
+    #print(r.json())
     #except:
     #    logging.warning('New Patient Error: Check Inputs')
-    return
+    return print(r.json())
 
 
 def post_heart_rate(parameters, server=None):
@@ -54,16 +67,34 @@ def post_heart_rate(parameters, server=None):
     r = requests.post(server, json=post_dictionary)
     #except:
     #    logging.warning('Heart Rate Error: Check Inputs')
-    print(r.json())
-    return
+    return print(r.json())
+
+
+def get_heart_rates(parameters, server=None):
+    if not server:
+        server = "http://127.0.0.1:5000/api/heart_rate/{}".format(parameters[0])
+    else:
+        server = server + '/api/heart_rate{}'.format(parameters[0])
+    r = requests.get(server)
+    return print(r.json())
 
 
 def send_email(receiver, patient_id):
+    """
+
+    Args:
+        receiver: email string of recipient
+        patient_id: often mrn number
+
+    Returns:
+        success of sending an email
+
+    """
     sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
     from_email = Email("test@example.com")
     to_email = Email(receiver)  # string of email of recipient
     subject = "WARNING: Tachycardic Patient"
-    content = Content("text/plain", "Patient " + patient_id + " is tachycardic")
+    content = Content("text/plain", "Patient " + str(patient_id) + " is tachycardic")
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
     print(response.status_code)
@@ -86,20 +117,21 @@ def post_avg_patient(parameters, server=None):
         server = "http://127.0.0.1:5000/api/heart_rate"
     else:
         server = server + '/api/heart_rate'
-    first_datetime = '0'  # figure out how to make this the first datetime
     post_dictionary = {
         "patient_id": parameters[0],
-        "heart_rate_average_since": first_datetime,  # date string
+        "heart_rate_average_since": parameters[1],  # date string
     }
     r = requests.post(server, post_dictionary)
-    print(r.json())
     return
 
 
 def main():
+    server_url = "http://127.0.0.1:5000"  # must match app.run in HRSS.py
     #  os.system("FLASK_APP=flask_service.py flask run")
     post_new_patient((1, 'dn56@duke.edu', 40))
     post_heart_rate((1, 150))
+    get_heart_rates([1])
+    # send_email('dn56@duke.edu', 1)
     return
 
 
