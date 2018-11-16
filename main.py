@@ -24,9 +24,9 @@ def post_new_patient(parameters, server=None):
         server = "http://127.0.0.1:5000/api/new_patient"
     else:
         server = server + '/api/new_patient'
-    post_dictionary = {"patient_id": int(parameters[0]),  # usually this would be the patient MRN
+    post_dictionary = {"patient_id": int(parameters[0]),
                        "attending_email": parameters[1],
-                       "user_age": parameters[2],  # in years
+                       "user_age": parameters[2],
                        }
     r = requests.post(server, json=post_dictionary)
     return print(r.json())
@@ -46,7 +46,7 @@ def post_heart_rate(parameters, server=None):
         server = "http://127.0.0.1:5000/api/heart_rate"
     else:
         server = server + '/api/heart_rate'
-    post_dictionary = {"patient_id": int(parameters[0]),  # usually this would be the patient MRN
+    post_dictionary = {"patient_id": int(parameters[0]),
                        "heart_rate": parameters[1],
                        }
     print(post_dictionary)
@@ -91,7 +91,7 @@ def post_avg_patient(parameters, server=None):
         server = server + '/api/heart_rate/interval_average'
     post_dictionary = {
         "patient_id": parameters[0],
-        "heart_rate_average_since": parameters[1],  # date string
+        "heart_rate_average_since": parameters[1],
     }
     r = requests.post(server, json=post_dictionary)
     return print(r.json())
