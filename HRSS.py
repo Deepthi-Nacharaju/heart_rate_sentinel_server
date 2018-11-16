@@ -60,7 +60,7 @@ def post_heart_rate():
     return jsonify(r)
 
 
-@app.route("/api/status/,<patient_id>", methods=["GET"])
+@app.route("/api/status/<patient_id>", methods=["GET"])
 def get_is_patient(patient_id):
     """
     GET request that returns if patient is tachycardic based on last posted heart rate
@@ -168,6 +168,16 @@ def post_heart_rate_avg():
             count += 1
     avg = float(sum_hr) / float(count)
     return jsonify(avg)
+
+
+@app.route("/name", methods=["GET"])
+def name():
+  """
+  Returns the string "Hello, world" to the caller
+  """
+  return_dict = {"name": "Deepthi Nacharaju"}
+  return jsonify(return_dict)
+
 
 
 if __name__ == "__main__":
