@@ -97,8 +97,8 @@ def post_avg_patient(parameters, server=None):
 
 
 def main():
-    # server_url = 'vcm-7471.vm.duke.edu:5000'  # must match app.run in HRSS.py
-    server_url = None
+    server_url = 'vcm-7471.vm.duke.edu:5000'  # must match app.run in HRSS.py
+    # server_url = None
     #  os.system("FLASK_APP=HRSS.py flask run")
     post_new_patient(('1', 'dn56@duke.edu', 40), server_url)
     # post_heart_rate((1, 650))
