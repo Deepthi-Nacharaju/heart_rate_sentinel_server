@@ -9,14 +9,6 @@ from pymodm import connect
 from pymodm import MongoModel, fields
 
 
-#class Patient(MongoModel):
- #   patient_id = fields.IntegerField(primary_key=True)
-  #  attending_email = fields.CharField()
-   # user_age = fields.FloatField()
-    #heart_rate = fields.IntegerField()
-    #heart_rate_average_since = fields.IntegerField()
-
-
 def post_new_patient(parameters, server=None):
     """
 
@@ -35,11 +27,7 @@ def post_new_patient(parameters, server=None):
                        "attending_email": parameters[1],
                        "user_age": parameters[2],  # in years
                        }
-    #try:
     r = requests.post(server, json=post_dictionary)
-    #print(r.json())
-    #except:
-    #    logging.warning('New Patient Error: Check Inputs')
     return print(r.json())
 
 
@@ -61,10 +49,8 @@ def post_heart_rate(parameters, server=None):
                        "heart_rate": parameters[1],
                        }
     print(post_dictionary)
-    #try:
     r = requests.post(server, json=post_dictionary)
-    #except:
-    #    logging.warning('Heart Rate Error: Check Inputs')
+
     return print(r.json())
 
 
@@ -111,16 +97,16 @@ def post_avg_patient(parameters, server=None):
 
 
 def main():
-    #server_url = 'vcm-7471.vm.duke.edu:5000'  # must match app.run in HRSS.py
+    # server_url = 'vcm-7471.vm.duke.edu:5000'  # must match app.run in HRSS.py
     server_url = None
     #  os.system("FLASK_APP=HRSS.py flask run")
     post_new_patient(('1', 'dn56@duke.edu', 40), server_url)
-    #post_heart_rate((1, 650))
+    # post_heart_rate((1, 650))
     post_heart_rate((1, 900), server_url)
     # get_heart_rates([1])
     # get_avg_heart_rate([1])
     now = datetime.datetime.now().isoformat()
-    #post_heart_rate((1, 155))
+    # post_heart_rate((1, 155))
     post_heart_rate((1, 900), server_url)
     post_heart_rate((1, 900), server_url)
     post_avg_patient((1, now), server_url)
