@@ -98,11 +98,14 @@ def is_tachy(age, rate):
     try:
         age = float(age)
         rate = int(rate)
-        if float(1 / 7 / 4 / 12) <= age <= float(2 / 7 / 4 / 12) and rate > 159:
+        if float(1 / 7 / 4 / 12) <= age <= float(2 / 7 / 4 / 12) and \
+                rate > 159:
             out = 1
-        elif float(3 / 7 / 4 / 12) <= age <= float(6 / 7 / 4 / 12) and rate > 166:
+        elif float(3 / 7 / 4 / 12) <= age <= float(6 / 7 / 4 / 12) \
+                and rate > 166:
             out = 1
-        elif float(1 / 4 / 12) <= age <= float(3 / 4 / 12) and rate > 182:
+        elif float(1 / 4 / 12) <= age <= float(3 / 4 / 12) \
+                and rate > 182:
             out = 1
         elif 1 / 12 <= age <= 2 / 12 and rate > 179:
             out = 1
@@ -135,8 +138,8 @@ def send_email(receiver, patient_id, heart_rate):
     to_email = Email(receiver)
     subject = 'Urgent! Patient ' + str(patient_id) + ' is Tachycardic!'
     content = Content("text/plain", "Patient " +
-                      str(patient_id) + " is Tachycardic with a heart rate of "
-                      + str(heart_rate))
+                      str(patient_id) + " is Tachycardic with a heart rate of " +
+                      str(heart_rate))
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
     print(response.status_code)

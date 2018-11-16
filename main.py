@@ -57,7 +57,8 @@ def post_heart_rate(parameters, server=None):
 
 def get_heart_rates(parameters, server=None):
     if not server:
-        server = "http://127.0.0.1:5000/api/heart_rate/{}".format(parameters[0])
+        server = "http://127.0.0.1:5000/api/heart_rate/{}"\
+            .format(parameters[0])
     else:
         server = server + '/api/heart_rate/{}'.format(parameters[0])
     r = requests.get(server)
@@ -67,7 +68,8 @@ def get_heart_rates(parameters, server=None):
 
 def get_avg_heart_rate(parameters, server=None):
     if not server:
-        server = "http://127.0.0.1:5000/api/heart_rate/average/{}".format(parameters[0])
+        server = "http://127.0.0.1:5000/api/heart_rate/average/{}"\
+            .format(parameters[0])
     else:
         server = server + '/api/heart_rate/average/{}'.format(parameters[0])
     r = requests.get(server)
@@ -98,14 +100,14 @@ def post_avg_patient(parameters, server=None):
 
 
 def main():
-    server_url = 'http://vcm-7471.vm.duke.edu:5000'  # must match app.run in HRSS.py
-    #server_url = None
+    server_url = 'http://vcm-7471.vm.duke.edu:5000'
+    # server_url = None
     #  os.system("FLASK_APP=HRSS.py flask run")
-    #post_new_patient(('2', 'dn56@duke.edu', 40), server_url)
+    # post_new_patient(('2', 'dn56@duke.edu', 40), server_url)
     post_heart_rate((1, 650), server_url)
-    #post_heart_rate((2, 150), server_url)
+    # post_heart_rate((2, 150), server_url)
     # get_heart_rates([2], server_url)
-    #get_avg_heart_rate([2], server_url)
+    # get_avg_heart_rate([2], server_url)
     now = datetime.datetime.now() - timedelta(hours=1)
     now = now.isoformat()
     # post_heart_rate((1, 155))
