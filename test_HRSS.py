@@ -33,13 +33,3 @@ import requests
 def test_is_tachy(age, rate, expected):
     result = is_tachy(age, rate)
     assert result == expected
-
-
-@pytest.mark.parametrize("server, dictionary, expected", [
-    ("http://127.0.0.1:5000/api/new_patient",
-     {"patient_id": 1, "attending_email": 'dn56@duke.edu', "user_age": 22},
-     {"patient_id": 1, "attending_email": 'dn56@duke.edu', "user_age": 22}),
-])
-def test_post_new_patient(server, dictionary, expected):
-    r = requests.post(server, json=dictionary)
-    assert expected == r.json()

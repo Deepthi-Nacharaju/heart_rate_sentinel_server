@@ -1,6 +1,7 @@
 import requests
 import logging
 import datetime
+from datetime import timedelta
 import sendgrid
 import os
 import pymodm
@@ -101,11 +102,12 @@ def main():
     #server_url = None
     #  os.system("FLASK_APP=HRSS.py flask run")
     #post_new_patient(('2', 'dn56@duke.edu', 40), server_url)
-    post_heart_rate((1, 650))
+    post_heart_rate((1, 650), server_url)
     #post_heart_rate((2, 150), server_url)
     # get_heart_rates([2], server_url)
     #get_avg_heart_rate([2], server_url)
-    now = datetime.datetime.now().isoformat()
+    now = datetime.datetime.now() - timedelta(hours=1)
+    now = now.isoformat()
     # post_heart_rate((1, 155))
     post_heart_rate((1, 900), server_url)
     post_heart_rate((1, 1000), server_url)
