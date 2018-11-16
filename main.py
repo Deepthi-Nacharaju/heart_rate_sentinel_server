@@ -107,7 +107,7 @@ def post_avg_patient(parameters, server=None):
         "heart_rate_average_since": parameters[1],  # date string
     }
     r = requests.post(server, json=post_dictionary)
-    return r.json()
+    return print(r.json())
 
 
 def main():
@@ -115,13 +115,13 @@ def main():
     #  os.system("FLASK_APP=flask_service.py flask run")
     post_new_patient(('1', 'dn56@duke.edu', 40))
     #post_heart_rate((1, 650))
-    post_heart_rate((1, 100))
+    post_heart_rate((1, 900))
     # get_heart_rates([1])
     # get_avg_heart_rate([1])
     now = datetime.datetime.now().isoformat()
     #post_heart_rate((1, 155))
-    post_heart_rate((1, 105))
-    post_heart_rate((1, 95))
+    post_heart_rate((1, 900))
+    post_heart_rate((1, 900))
     post_avg_patient((1, now))
     return
 

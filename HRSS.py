@@ -8,6 +8,7 @@ import datetime
 import sendgrid
 import os
 from sendgrid.helpers.mail import *
+from dateutil import parser
 
 app = Flask(__name__)
 connect("mongodb://dnacharaju:goduke10@ds059365.mlab.com:59365/bme590")  # connect to database
@@ -159,13 +160,13 @@ def post_heart_rate_avg():
     count = 0
     time_array = patient.heart_rate_time
     print(type(patient.heart_rate))
+    dt_thresh = parser.parse(r['heart_rate_average_since'])
     for index, time in enumerate(time_array):
-        time = datetime.fromisoformat(time)
-        #  r_time = datetime.datetime.fromisoformat(r["heart_rate_average_since"])
-        if time > datetime.datetime.fromisoformat(r["heart_rate_average_since"]):
+        dt_object = parser.parse(time)
+        if dt_object > dt_thresh:
             sum_hr += patient.heart_rate[index]
             count += 1
-    avg = float(sum) / float(count)
+    avg = float(sum_hr) / float(count)
     return jsonify(avg)
 
 
