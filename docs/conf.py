@@ -131,7 +131,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'heart_rate_sentinel_server.tex', 'heart\\_rate\\_sentinel\\_server Documentation',
+    (master_doc, 'heart_rate_sentinel_server.tex',
+     'heart\\_rate\\_sentinel\\_server Documentation',
      'Deepthi Nacharaju', 'manual'),
 ]
 
@@ -141,7 +142,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'heart_rate_sentinel_server', 'heart_rate_sentinel_server Documentation',
+    (master_doc, 'heart_rate_sentinel_server',
+     'heart_rate_sentinel_server Documentation',
      [author], 1)
 ]
 
@@ -152,8 +154,10 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'heart_rate_sentinel_server', 'heart_rate_sentinel_server Documentation',
-     author, 'heart_rate_sentinel_server', 'One line description of project.',
+    (master_doc, 'heart_rate_sentinel_server',
+     'heart_rate_sentinel_server Documentation',
+     author, 'heart_rate_sentinel_server',
+     'One line description of project.',
      'Miscellaneous'),
 ]
 
@@ -172,7 +176,8 @@ epub_title = project
 #
 # epub_uid = ''
 
-# A list of files that should not be packed into the epub file.
+# A list of files that should not be
+# packed into the epub file.
 epub_exclude_files = ['search.html']
 
 
