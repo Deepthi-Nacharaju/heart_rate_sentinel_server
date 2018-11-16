@@ -7,6 +7,7 @@ from pymodm import MongoModel, fields
 import datetime
 import sendgrid
 import os
+from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import *
 from dateutil import parser
 
@@ -54,8 +55,8 @@ def post_heart_rate():
         patient.heart_rate_time = datetime.datetime.now().isoformat()
         patient.save()
     out = is_tachy(patient.user_age, int(r['heart_rate']))
-    # if out:
-        # send_email(patient.attending_email, patient.patient_id, patient.heart_rate)
+    if out:
+        send_email(patient.attending_email, patient.patient_id, patient.heart_rate)
     r['heart_rate'] = patient.heart_rate
     return jsonify(r)
 
@@ -182,4 +183,4 @@ def name():
 
 if __name__ == "__main__":
     connect("mongodb://dnacharaju:goduke10@ds059365.mlab.com:59365/bme590")  # connect to database
-    app.run(host="0.0.0.0")
+    app.run(host="127.0.0.1")
