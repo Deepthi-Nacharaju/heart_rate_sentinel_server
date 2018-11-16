@@ -172,4 +172,4 @@ def post_heart_rate_avg():
 
 if __name__ == "__main__":
     connect("mongodb://dnacharaju:goduke10@ds059365.mlab.com:59365/bme590")  # connect to database
-    app.run(host="127.0.0.1")
+    app.run(host="vcm-7471.vm.duke.edu")
