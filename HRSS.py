@@ -55,8 +55,8 @@ def post_heart_rate():
         patient.heart_rate_time = datetime.datetime.now().isoformat()
         patient.save()
     out = is_tachy(patient.user_age, int(r['heart_rate']))
-    # if out:
-    #    send_email(patient.attending_email, patient.patient_id, r['heart_rate'])
+    if out:
+        send_email(patient.attending_email, patient.patient_id, r['heart_rate'])
     r['heart_rate'] = patient.heart_rate
     return jsonify(r)
 
@@ -156,14 +156,14 @@ def get_avg_patient(patient_id):
 def post_heart_rate_avg():
     r = request.get_json()
     patient = Patient.objects.raw({'_id': r['patient_id']}).first()
-    print(patient)
     sum_hr = 0
     count = 0
     time_array = patient.heart_rate_time
-    print(type(patient.heart_rate))
     dt_thresh = parser.parse(r['heart_rate_average_since'])
+    print(dt_thresh)
     for index, time in enumerate(time_array):
         dt_object = parser.parse(time)
+        print(dt_object)
         if dt_object > dt_thresh:
             sum_hr += patient.heart_rate[index]
             count += 1
