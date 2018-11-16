@@ -10,6 +10,9 @@ class Patient(MongoModel):
     heart_rate_average_since = fields.CharField()
 
 
-r = {'patient_id': 1, 'attending_email': 'dn56@duke.edu', 'user_age': 22}
-new_patient = Patient(r['patient_id'], attending_email=r['attending_email'], user_age=r['user_age'])
+r = {'patient_id': 1, 'attending_email': 'dn56@duke.edu',
+     'user_age': 22}
+new_patient = Patient(r['patient_id'],
+                      attending_email=r['attending_email'],
+                      user_age=r['user_age'])
 print(new_patient)
