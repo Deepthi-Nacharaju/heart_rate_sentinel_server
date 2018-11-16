@@ -20,6 +20,7 @@ class Patient(MongoModel):
     heart_rate = fields.ListField()
     heart_rate_time = fields.ListField()
 
+
 @app.route("/api/new_patient", methods=["POST"])
 def post_new_patient():
     """
@@ -28,8 +29,9 @@ def post_new_patient():
 
     """
     r = request.get_json()
-    patient = Patient(r['patient_id'], attending_email=r['attending_email'], user_age=r['user_age'])
+    patient = Patient(int(r['patient_id']), attending_email=r['attending_email'], user_age=int(r['user_age']))
     patient.save()
+    print(patient.patient_id)
     return jsonify(r)
 
 
@@ -41,18 +43,18 @@ def post_heart_rate():
 
     """
     r = request.get_json()
-    patient = Patient.objects.raw({'_id': r['patient_id']}).first()
+    patient = Patient.objects.raw({'_id': int(r['patient_id'])}).first()
     try:
         patient.heart_rate.append(r['heart_rate'])
         patient.heart_rate_time.append(datetime.datetime.now().isoformat())
         patient.save()
     except AttributeError:
-        patient.heart_rate = r['heart_rate']
+        patient.heart_rate = int(r['heart_rate'])
         patient.heart_rate_time = datetime.datetime.now().isoformat()
         patient.save()
-    out = is_tachy(patient.user_age, r['heart_rate'])
-    if out:
-        send_email(patient.attending_email, patient.patient_id, patient.heart_rate)
+    out = is_tachy(patient.user_age, int(r['heart_rate']))
+    # if out:
+        # send_email(patient.attending_email, patient.patient_id, patient.heart_rate)
     r['heart_rate'] = patient.heart_rate
     return jsonify(r)
 
@@ -87,6 +89,8 @@ def is_tachy(age, rate):
     Returns: 1 if tachycardic, 0 if not
 
     """
+    age = float(age)
+    rate = int(rate)
     if float(1 / 7 / 4 / 12) <= age <= float(2 / 7 / 4 / 12) and rate > 159:
         out = 1
     elif float(3 / 7 / 4 / 12) <= age <= float(6 / 7 / 4 / 12) and rate > 166:
@@ -156,7 +160,7 @@ def post_heart_rate_avg():
     time_array = patient.heart_rate_time
     print(type(patient.heart_rate))
     for index, time in enumerate(time_array):
-        time = datetime.datetime.fromisoformat(time)
+        time = datetime.fromisoformat(time)
         #  r_time = datetime.datetime.fromisoformat(r["heart_rate_average_since"])
         if time > datetime.datetime.fromisoformat(r["heart_rate_average_since"]):
             sum_hr += patient.heart_rate[index]

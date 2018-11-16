@@ -87,23 +87,6 @@ def get_avg_heart_rate(parameters, server=None):
     print(int(r.json()))
     return
 
-def send_email(receiver, patient_id):
-    """
-
-    Args:
-        receiver: email string of recipient
-        patient_id: often mrn number
-
-    Returns:
-        success of sending an email
-
-    """
-
-    print(response.status_code)
-    print(response.body)
-    print(response.headers)
-    return
-
 
 def post_avg_patient(parameters, server=None):
     """
@@ -130,17 +113,16 @@ def post_avg_patient(parameters, server=None):
 def main():
     server_url = "http://127.0.0.1:5000"  # must match app.run in HRSS.py
     #  os.system("FLASK_APP=flask_service.py flask run")
-    post_new_patient((1, 'dn56@duke.edu', 40))
-    post_heart_rate((1, 650))
-    # post_heart_rate((1, 100))
+    post_new_patient(('1', 'dn56@duke.edu', 40))
+    #post_heart_rate((1, 650))
+    post_heart_rate((1, 100))
     # get_heart_rates([1])
     # get_avg_heart_rate([1])
-    # now = datetime.datetime.now().isoformat()
-    # post_heart_rate((1, 155))
-    # post_heart_rate((1, 105))
-    # post_heart_rate((1, 95))
-    # post_avg_patient((1, now))
-    # send_email('dn56@duke.edu', 1)
+    now = datetime.datetime.now().isoformat()
+    #post_heart_rate((1, 155))
+    post_heart_rate((1, 105))
+    post_heart_rate((1, 95))
+    post_avg_patient((1, now))
     return
 
 
