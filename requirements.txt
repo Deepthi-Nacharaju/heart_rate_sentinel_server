@@ -4,3 +4,6 @@ sendgrid
 pymodm
 datetime
 python-dateutil
+pytest
+pytest-cov
+pytest-pep8
