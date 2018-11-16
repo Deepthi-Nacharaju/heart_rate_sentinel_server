@@ -56,7 +56,7 @@ def post_heart_rate():
         patient.save()
     out = is_tachy(patient.user_age, int(r['heart_rate']))
     if out:
-        send_email(patient.attending_email, patient.patient_id, patient.heart_rate)
+        send_email(patient.attending_email, patient.patient_id, r['heart_rate'])
     r['heart_rate'] = patient.heart_rate
     return jsonify(r)
 
