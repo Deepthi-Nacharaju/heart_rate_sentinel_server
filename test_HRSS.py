@@ -28,6 +28,7 @@ import requests
     (13, 200, 1),
     (18, 200, 1),
     (18, 86, 0),
+    ('Word', 'Word', 1),
 
 ])
 def test_is_tachy(age, rate, expected):

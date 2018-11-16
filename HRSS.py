@@ -12,7 +12,7 @@ from sendgrid.helpers.mail import *
 from dateutil import parser
 
 app = Flask(__name__)
-connect("mongodb://dnacharaju:goduke10@ds059365.mlab.com:59365/bme590")  # connect to database
+connect("mongodb://dnacharaju:goduke10@ds059365.mlab.com:59365/bme590")
 
 
 class Patient(MongoModel):
@@ -31,7 +31,9 @@ def post_new_patient():
 
     """
     r = request.get_json()
-    patient = Patient(int(r['patient_id']), attending_email=r['attending_email'], user_age=int(r['user_age']))
+    patient = Patient(int(r['patient_id']),
+                      attending_email=r['attending_email'],
+                      user_age=int(r['user_age']))
     patient.save()
     print(patient.patient_id)
     return jsonify(r)
@@ -56,7 +58,8 @@ def post_heart_rate():
         patient.save()
     out = is_tachy(patient.user_age, int(r['heart_rate']))
     if out:
-        send_email(patient.attending_email, patient.patient_id, r['heart_rate'])
+        send_email(patient.attending_email,
+                   patient.patient_id, r['heart_rate'])
     r['heart_rate'] = patient.heart_rate
     return jsonify(r)
 
@@ -64,7 +67,8 @@ def post_heart_rate():
 @app.route("/api/status/<patient_id>", methods=["GET"])
 def get_is_patient(patient_id):
     """
-    GET request that returns if patient is tachycardic based on last posted heart rate
+    GET request that returns if patient is
+    tachycardic based on last posted heart rate
     Args:
         patient_id: usually patient mrn
 
@@ -91,34 +95,37 @@ def is_tachy(age, rate):
     Returns: 1 if tachycardic, 0 if not
 
     """
-    age = float(age)
-    rate = int(rate)
-    if float(1 / 7 / 4 / 12) <= age <= float(2 / 7 / 4 / 12) and rate > 159:
+    try:
+        age = float(age)
+        rate = int(rate)
+        if float(1 / 7 / 4 / 12) <= age <= float(2 / 7 / 4 / 12) and rate > 159:
+            out = 1
+        elif float(3 / 7 / 4 / 12) <= age <= float(6 / 7 / 4 / 12) and rate > 166:
+            out = 1
+        elif float(1 / 4 / 12) <= age <= float(3 / 4 / 12) and rate > 182:
+            out = 1
+        elif 1 / 12 <= age <= 2 / 12 and rate > 179:
+            out = 1
+        elif 3 / 12 <= age <= 5 / 12 and rate > 186:
+            out = 1
+        elif 6 / 12 <= age <= 11 / 12 and rate > 169:
+            out = 1
+        elif 1 <= age <= 2 and rate > 151:
+            out = 1
+        elif 3 <= age <= 4 and rate > 137:
+            out = 1
+        elif 5 <= age <= 7 and rate > 133:
+            out = 1
+        elif 8 <= age <= 11 and rate > 130:
+            out = 1
+        elif 12 <= age <= 15 and rate > 119:
+            out = 1
+        elif age > 15 and rate > 100:
+            out = 1
+        else:
+            out = 0
+    except ValueError:
         out = 1
-    elif float(3 / 7 / 4 / 12) <= age <= float(6 / 7 / 4 / 12) and rate > 166:
-        out = 1
-    elif float(1 / 4 / 12) <= age <= float(3 / 4 / 12) and rate > 182:
-        out = 1
-    elif 1 / 12 <= age <= 2 / 12 and rate > 179:
-        out = 1
-    elif 3 / 12 <= age <= 5 / 12 and rate > 186:
-        out = 1
-    elif 6 / 12 <= age <= 11 / 12 and rate > 169:
-        out = 1
-    elif 1 <= age <= 2 and rate > 151:
-        out = 1
-    elif 3 <= age <= 4 and rate > 137:
-        out = 1
-    elif 5 <= age <= 7 and rate > 133:
-        out = 1
-    elif 8 <= age <= 11 and rate > 130:
-        out = 1
-    elif 12 <= age <= 15 and rate > 119:
-        out = 1
-    elif age > 15 and rate > 100:
-        out = 1
-    else:
-        out = 0
     return out
 
 
@@ -127,7 +134,8 @@ def send_email(receiver, patient_id, heart_rate):
     from_email = Email("heart_rate_server@duke.edu")
     to_email = Email(receiver)
     subject = 'Urgent! Patient ' + str(patient_id) + ' is Tachycardic!'
-    content = Content("text/plain", "Patient " + str(patient_id) + " is Tachycardic with a heart rate of "
+    content = Content("text/plain", "Patient " +
+                      str(patient_id) + " is Tachycardic with a heart rate of "
                       + str(heart_rate))
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
@@ -181,6 +189,6 @@ def name():
 
 
 if __name__ == "__main__":
-    connect("mongodb://dnacharaju:goduke10@ds059365.mlab.com:59365/bme590")  # connect to database
+    connect("mongodb://dnacharaju:goduke10@ds059365.mlab.com:59365/bme590")
     # app.run(host="127.0.0.1")
     app.run(host="0.0.0.0")
